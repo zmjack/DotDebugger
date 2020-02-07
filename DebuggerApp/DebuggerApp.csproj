@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Prefer32Bit>true</Prefer32Bit>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NStandard" Version="0.2.7.5" />
+    <PackageReference Include="NWin32" Version="1.0.2" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" BeforeTargets="PostBuildEvent">
+    <ItemGroup>
+      <CopyFile Include="$(SolutionDir)$(Configuration)/CppConsoleApp.exe"></CopyFile>
+      <CopyFile Include="$(SolutionDir)$(Configuration)/Udis86Wrapper.dll"></CopyFile>
+      <CopyFile Include="$(SolutionDir)udis86-1.7.2/Bin/x86/libudis86.dll" Condition="'$(Platform)' == 'AnyCPU'"></CopyFile>
+    </ItemGroup>
+    <Copy SourceFiles="@(CopyFile)" DestinationFolder="$(OutDir)"></Copy>
+  </Target>
+
+</Project>
